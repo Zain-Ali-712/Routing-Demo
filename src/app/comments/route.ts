@@ -1,18 +1,14 @@
 import { stringify } from "querystring";
-const comments = [
-    {
-        id:1,
-        text: "This is the First Comment",
-    },{
-        id:1,
-        text: "This is the Second Comment",
-    },{
-        id:1,
-        text: "This is the Third Comment",
-    },
-];
-export async function GET(){
-    return Response.json(comments);
+import { comments } from "./data";
+import { NextRequest } from "next/server";
+
+export async function GET(request:NextRequest){
+    const searchParams = request.nextUrl.searchParams;
+    const query = searchParams.get("query");
+    const filteredComment = query 
+    ? comments.filter((comment)=> comment.text.includes(query))
+    : comments;  
+    return Response.json(filteredComment);
 }
 
 export async function POST(request: Request){
